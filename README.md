@@ -1,48 +1,50 @@
 # AI Driver Safety System
 
-This project is a real-time driver monitoring application built with Python, OpenCV, MediaPipe, and YOLO. It detects risky driver behavior and raises alerts when the driver appears drowsy, yawning, distracted, or using a mobile phone while driving.
+This project is a real-time driver monitoring system that uses OpenCV, MediaPipe, and YOLO to detect risky driving behavior. It monitors drowsiness, yawning, distraction, phone usage, and missing seatbelt compliance, then raises audio alerts and updates a live safety score.
 
-## What this project does
-
-The current implementation includes:
+## Features
 
 - Drowsiness detection using Eye Aspect Ratio (EAR)
 - Yawning detection using Mouth Aspect Ratio (MAR)
-- Head pose and distraction tracking using facial landmark geometry
-- Mobile phone detection using a YOLO model
-- Safety scoring based on repeated risky events
-- Voice alerts for drowsiness, yawning, distraction, and phone usage
-- CSV event logging for detected incidents
-- Dashboard overlay in the webcam window showing live status and score
+- Head pose and distraction detection
+- Mobile phone detection with YOLO
+- Seatbelt detection with alert and score penalty
+- Safety score tracking and status updates
+- Voice alerts for each detected risk
+- CSV event logging for recorded incidents
+- Webcam dashboard overlay with live metrics
 
 ## Project structure
 
-- `main.py` - main webcam-based driver safety monitoring loop
-- `config.py` - detection thresholds and timing values
-- `phone_detection.py` - YOLO-based smartphone detection
-- `drowsiness.py` - drowsiness logic helpers
-- `yawn_detection.py` - yawn detection helpers
-- `head_pose.py` - head orientation and distraction logic
-- `safety_score.py` - scoring logic and risk levels
-- `event_logger.py` - logs events into `events.csv`
-- `alerts.py` - sound alerts using pygame
-- `create_voice_alerts.py` - utility for creating alert sound files
-- `camera_test.py` - webcam check utility
-- `test_event_logger.py` - logger validation
-- `test_phone_detection.py` - phone detection test
-- `test_voice_alerts.py` - voice alert test
-- `face_landmarker.task` - MediaPipe face landmark model
-- `assets/` - audio alert files
-- `driversafetyenv/` - local Python virtual environment
+- main.py - main application loop and live monitoring dashboard
+- config.py - thresholds and timing values
+- alerts.py - audio alert logic
+- create_voice_alerts.py - generates the warning sound files
+- event_logger.py - writes events to events.csv
+- safety_score.py - tracks score and risk status
+- phone_detection.py - YOLO phone detection logic
+- seatbelt_detection.py - YOLO seatbelt detection logic
+- drowsiness.py - standalone drowsiness logic reference
+- distraction.py - standalone distraction logic reference
+- head_pose.py - standalone head pose logic reference
+- camera_test.py - webcam validation utility
+- test_event_logger.py - event logger checks
+- test_phone_detection.py - phone detection checks
+- test_seatbelt_detection.py - seatbelt detection checks
+- test_voice_alerts.py - alert playback checks
+- assets/ - generated voice alert files
+- driversafetyenv/ - local virtual environment (ignored by Git)
+- face_landmarker.task - MediaPipe face landmark model
+- yolo11n.pt - YOLO model weights
+- seatbelt_best.pt - seatbelt detection model weights
+- events.csv - generated log file
 
-## Technology stack
+## Tech stack
 
-- Python 3.10+
+- Python
 - OpenCV
 - MediaPipe
 - NumPy
-- Pandas
-- Matplotlib
 - Pygame
 - Ultralytics YOLO
 
@@ -58,72 +60,73 @@ The current implementation includes:
    driversafetyenv\Scripts\activate
    ```
 
-3. Install the project dependencies:
+3. Install dependencies:
 
    ```bash
    pip install -r requirements.txt
    pip install ultralytics
    ```
 
-4. Make sure the webcam is available and the model file `face_landmarker.task` is present in the project root.
+4. Make sure your webcam is connected and the model files are available locally.
 
 ## Run the application
-
-Start the main monitoring system:
 
 ```bash
 python main.py
 ```
 
-The app opens a webcam window, monitors the driver, and shows live status such as:
+The app will open a webcam window and display the live driver safety status. Press Q to exit.
 
-- Driver normal
-- Drowsiness detected
-- Yawning detected
-- Distraction detected
-- Phone detected
-- Safety score / 100
+## Events and scoring
 
-Press `Q` to close the application.
-
-## Event logging
-
-Detected events are written into `events.csv` with these columns:
+Detected events are logged in events.csv with the following fields:
 
 - Date
 - Time
 - Event
 - Duration (seconds)
 
-Examples of logged events:
+Examples include:
 
-- `DROWSINESS`
-- `YAWNING`
-- `DISTRACTION`
-- `PHONE_USAGE`
+- DROWSINESS
+- YAWNING
+- DISTRACTION
+- PHONE_USAGE
+- NO_SEATBELT
 
-## Safety scoring
-
-The system starts with a score of 100 and reduces points for risky behavior:
+Current score penalties:
 
 - Drowsiness: -15
 - Yawning: -5
 - Distraction: -10
 - Phone usage: -15
+- No seatbelt: -10
 
-The score is mapped to risk states:
+Risk ranges:
 
 - 80 to 100: SAFE
 - 60 to 79: MODERATE
 - 40 to 59: WARNING
 - Below 40: HIGH RISK
 
-## Current status
+## Git and local files
 
-This project is in a working prototype stage. It includes the main live detection pipeline, alert system, logging, scoring, and local tests for the core features.
+The repository includes a .gitignore file to prevent unnecessary local files from being uploaded to GitHub, including:
+
+- Python virtual environments
+- compiled cache files
+- generated logs and runtime data
+- large local model files
+- generated voice alert audio
+
+This keeps the Git repo small and avoids uploading machine-specific local artifacts.
 
 ## Notes
 
-- Audio files for warnings are expected under the `assets/` directory.
-- Mobile detection depends on YOLO model weights and requires the `ultralytics` package.
-- This project is designed for local testing and real-time driver monitoring on a machine with a webcam.
+- The project is designed for local testing and real-time monitoring on a machine with a webcam.
+- Large model files and generated audio are stored locally and are intentionally ignored by Git.
+- If you need to regenerate the alert sound files, run:
+
+  ```bash
+  python create_voice_alerts.py
+  ```

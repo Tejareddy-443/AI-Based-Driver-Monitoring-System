@@ -1,0 +1,29 @@
+# Python virtual environments
+venv/
+.env/
+.venv/
+env/
+driversafetyenv/
+
+# Python cache and compiled files
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Local runtime data
+*.log
+*.tmp
+events.csv
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local model files and generated audio
+*.pt
+*.task
+assets/*.wav
+assets/*.mp3

@@ -1,5 +1,5 @@
-import pyttsx3
 import os
+import pyttsx3
 
 
 # ============================================================
@@ -18,7 +18,7 @@ try:
 except Exception as e:
     print("ERROR: Could not initialize text-to-speech engine.")
     print("Details:", e)
-    exit()
+    raise
 
 
 # ============================================================
@@ -30,26 +30,20 @@ engine.setProperty("volume", 1.0)
 
 
 # ============================================================
-# VOICE ALERT MESSAGES
+# ALERT MESSAGES
 # ============================================================
 
 alerts = {
-    "drowsiness.wav":
-        "Wake up! Please keep your eyes open.",
-
-    "yawn.wav":
-        "You appear tired. Please stay alert.",
-
-    "distraction.wav":
-        "Please keep your eyes on the road.",
-
-    "phone.wav":
-        "Warning! Mobile phone detected. Please stop using your phone while driving."
+    "drowsiness.wav": "Wake up! Please keep your eyes open.",
+    "yawn.wav": "You appear tired. Please stay alert.",
+    "distraction.wav": "Please keep your eyes on the road.",
+    "phone.wav": "Warning! Mobile phone detected. Please stop using your phone while driving.",
+    "seatbelt.wav": "Please fasten your seatbelt for safety."
 }
 
 
 # ============================================================
-# GENERATE VOICE ALERTS
+# GENERATE AUDIO FILES
 # ============================================================
 
 print()
@@ -58,50 +52,29 @@ print("       CREATING VOICE ALERTS")
 print("==========================================")
 print()
 
-
 for filename, message in alerts.items():
-
-    output_path = os.path.join(
-        "assets",
-        filename
-    )
-
+    output_path = os.path.join("assets", filename)
     print(f"Creating: {filename}")
 
     try:
-
-        engine.save_to_file(
-            message,
-            output_path
-        )
-
+        engine.save_to_file(message, output_path)
         print(f"Message: {message}")
         print(f"Output: {output_path}")
         print()
-
     except Exception as e:
-
         print(f"ERROR creating {filename}")
         print("Details:", e)
 
-
-# ============================================================
-# GENERATE ALL AUDIO FILES
-# ============================================================
-
 try:
-
     engine.runAndWait()
-
 except Exception as e:
-
     print("ERROR while generating audio files.")
     print("Details:", e)
-    exit()
+    raise
 
 
 # ============================================================
-# CHECK GENERATED FILES
+# CONFIRM CREATION
 # ============================================================
 
 print()
@@ -110,68 +83,13 @@ print("       CHECKING AUDIO FILES")
 print("==========================================")
 print()
 
-
-all_created = True
-
-
 for filename in alerts.keys():
-
-    output_path = os.path.join(
-        "assets",
-        filename
-    )
-
+    output_path = os.path.join("assets", filename)
     if os.path.exists(output_path):
-
-        file_size = os.path.getsize(output_path)
-
-        if file_size > 0:
-
-            print(f"[OK] {filename}")
-
-        else:
-
-            print(f"[ERROR] {filename} is empty.")
-            all_created = False
-
+        print(f"[OK] {filename}")
     else:
-
         print(f"[ERROR] {filename} was not created.")
-        all_created = False
-
-
-# ============================================================
-# CLEANUP
-# ============================================================
-
-try:
-    engine.stop()
-except Exception:
-    pass
-
-
-# ============================================================
-# FINAL MESSAGE
-# ============================================================
 
 print()
-
-if all_created:
-
-    print("==========================================")
-    print(" ALL VOICE ALERTS CREATED SUCCESSFULLY")
-    print("==========================================")
-
-    print()
-    print("Files created:")
-
-    for filename in alerts.keys():
-        print(f" - assets\\{filename}")
-
-else:
-
-    print("==========================================")
-    print(" SOME AUDIO FILES WERE NOT CREATED")
-    print("==========================================")
-
+print("Voice alerts generation complete.")
 print()
