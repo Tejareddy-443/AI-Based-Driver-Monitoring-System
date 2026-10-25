@@ -1,6 +1,6 @@
 # AI Driver Safety System
 
-This project is a real-time driver monitoring system that uses OpenCV, MediaPipe, and YOLO to detect risky driving behavior. It monitors drowsiness, yawning, distraction, phone usage, and missing seatbelt compliance, then raises audio alerts and updates a live safety score.
+This project is a real-time driver monitoring system that uses OpenCV, MediaPipe, and YOLO to detect risky driving behavior. It monitors drowsiness, yawning, distraction, and phone usage, then raises audio alerts and updates a live safety score.
 
 ## Features
 
@@ -8,7 +8,6 @@ This project is a real-time driver monitoring system that uses OpenCV, MediaPipe
 - Yawning detection using Mouth Aspect Ratio (MAR)
 - Head pose and distraction detection
 - Mobile phone detection with YOLO
-- Seatbelt detection with alert and score penalty
 - Safety score tracking and status updates
 - Voice alerts for each detected risk
 - CSV event logging for recorded incidents
@@ -23,20 +22,17 @@ This project is a real-time driver monitoring system that uses OpenCV, MediaPipe
 - event_logger.py - writes events to events.csv
 - safety_score.py - tracks score and risk status
 - phone_detection.py - YOLO phone detection logic
-- seatbelt_detection.py - YOLO seatbelt detection logic
 - drowsiness.py - standalone drowsiness logic reference
 - distraction.py - standalone distraction logic reference
 - head_pose.py - standalone head pose logic reference
 - camera_test.py - webcam validation utility
 - test_event_logger.py - event logger checks
 - test_phone_detection.py - phone detection checks
-- test_seatbelt_detection.py - seatbelt detection checks
 - test_voice_alerts.py - alert playback checks
 - assets/ - generated voice alert files
 - driversafetyenv/ - local virtual environment (ignored by Git)
 - face_landmarker.task - MediaPipe face landmark model
 - yolo11n.pt - YOLO model weights
-- seatbelt_best.pt - seatbelt detection model weights
 - events.csv - generated log file
 
 ## Tech stack
@@ -92,7 +88,6 @@ Examples include:
 - YAWNING
 - DISTRACTION
 - PHONE_USAGE
-- NO_SEATBELT
 
 Current score penalties:
 
@@ -100,7 +95,6 @@ Current score penalties:
 - Yawning: -5
 - Distraction: -10
 - Phone usage: -15
-- No seatbelt: -10
 
 Risk ranges:
 

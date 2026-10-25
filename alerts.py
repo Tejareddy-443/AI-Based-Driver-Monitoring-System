@@ -18,7 +18,6 @@ DROWSINESS_SOUND = os.path.join("assets", "drowsiness.wav")
 YAWN_SOUND = os.path.join("assets", "yawn.wav")
 DISTRACTION_SOUND = os.path.join("assets", "distraction.wav")
 PHONE_SOUND = os.path.join("assets", "phone.wav")
-SEATBELT_SOUND = os.path.join("assets", "seatbelt.wav")
 
 
 # ============================================================
@@ -33,7 +32,6 @@ last_drowsiness_alert = 0
 last_yawn_alert = 0
 last_distraction_alert = 0
 last_phone_alert = 0
-last_seatbelt_alert = 0
 
 # ============================================================
 # Common Sound Function
@@ -128,15 +126,3 @@ def play_phone_alert():
         play_sound(PHONE_SOUND)
 
         last_phone_alert = current_time
-
-def play_seatbelt_alert():
-
-    global last_seatbelt_alert
-
-    current_time = time.time()
-
-    if current_time - last_seatbelt_alert >= ALERT_COOLDOWN:
-
-        play_sound(SEATBELT_SOUND)
-
-        last_seatbelt_alert = current_time

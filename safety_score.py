@@ -11,7 +11,6 @@ DROWSINESS_PENALTY = 15
 YAWNING_PENALTY = 5
 DISTRACTION_PENALTY = 10
 PHONE_PENALTY = 15
-SEATBELT_PENALTY = 10
 
 # ============================================================
 # SAFETY SCORE CLASS
@@ -29,7 +28,6 @@ class SafetyScore:
         self.yawning_count = 0
         self.distraction_count = 0
         self.phone_count = 0
-        self.seatbelt_count = 0
 
     # ========================================================
     # DROWSINESS
@@ -72,13 +70,6 @@ class SafetyScore:
     def add_phone_usage(self):
         self.phone_count += 1
         self.score -= PHONE_PENALTY
-        self._limit_score()
-
-    def add_seatbelt_violation(self):
-        self.seatbelt_count += 1
-
-        self.score -= SEATBELT_PENALTY
-
         self._limit_score()
 
 

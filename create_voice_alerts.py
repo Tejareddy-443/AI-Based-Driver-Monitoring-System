@@ -37,8 +37,7 @@ alerts = {
     "drowsiness.wav": "Wake up! Please keep your eyes open.",
     "yawn.wav": "You appear tired. Please stay alert.",
     "distraction.wav": "Please keep your eyes on the road.",
-    "phone.wav": "Warning! Mobile phone detected. Please stop using your phone while driving.",
-    "seatbelt.wav": "Please fasten your seatbelt for safety."
+    "phone.wav": "Warning! Mobile phone detected. Please stop using your phone while driving."
 }
 
 

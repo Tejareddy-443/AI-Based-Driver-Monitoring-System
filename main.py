@@ -15,20 +15,16 @@ from config import (
     YAW_THRESHOLD,
     PITCH_THRESHOLD,
     DISTRACTION_DURATION,
-    PHONE_DURATION,
-    SEATBELT_CONFIDENCE_THRESHOLD,
-    SEATBELT_DURATION
+    PHONE_DURATION
 )
 
 from phone_detection import PhoneDetector
-from seatbelt_detection import SeatbeltDetector
 
 from alerts import (
     play_drowsiness_alert,
     play_yawn_alert,
     play_distraction_alert,
-    play_phone_alert,
-    play_seatbelt_alert
+    play_phone_alert
 )
 
 from event_logger import log_event
@@ -132,19 +128,6 @@ phone_detector = PhoneDetector()
 
 print()
 print("Mobile phone detector ready.")
-print()
-
-
-print()
-print("==========================================")
-print("      LOADING SEATBELT DETECTOR")
-print("==========================================")
-print()
-
-seatbelt_detector = SeatbeltDetector()
-
-print()
-print("Seatbelt detector ready.")
 print()
 
 
@@ -266,8 +249,6 @@ distraction_start_time = None
 
 phone_start_time = None
 
-seatbelt_start_time = None
-
 
 # ============================================================
 # DETECTION STATES
@@ -281,8 +262,6 @@ distraction_detected = False
 
 phone_detected = False
 
-seatbelt_detected = False
-
 
 # ============================================================
 # EVENT LOGGING STATES
@@ -295,8 +274,6 @@ yawn_logged = False
 distraction_logged = False
 
 phone_logged = False
-
-seatbelt_logged = False
 
 
 # ============================================================
@@ -314,8 +291,6 @@ mouth_open_duration = 0.0
 distraction_duration = 0.0
 
 phone_duration = 0.0
-
-seatbelt_duration = 0.0
 
 
 average_ear = 0.0
@@ -408,46 +383,6 @@ while True:
         phone_detected = False
 
         phone_logged = False
-
-
-    # ========================================================
-    # SEATBELT DETECTION
-    # ========================================================
-
-    seatbelt_detected_flag, seatbelt_class, seatbelt_confidence = (
-        seatbelt_detector.detect(frame)
-    )
-
-    if not seatbelt_detected_flag:
-
-        if seatbelt_confidence >= SEATBELT_CONFIDENCE_THRESHOLD:
-
-            if seatbelt_start_time is None:
-                seatbelt_start_time = time.time()
-
-            seatbelt_duration = (
-                time.time()
-                - seatbelt_start_time
-            )
-
-            if seatbelt_duration >= SEATBELT_DURATION:
-                seatbelt_detected = True
-            else:
-                seatbelt_detected = False
-
-        else:
-
-            seatbelt_start_time = None
-            seatbelt_duration = 0.0
-            seatbelt_detected = False
-            seatbelt_logged = False
-
-    else:
-
-        seatbelt_start_time = None
-        seatbelt_duration = 0.0
-        seatbelt_detected = False
-        seatbelt_logged = False
 
 
     # ========================================================
@@ -1032,31 +967,6 @@ while True:
 
 
     # ========================================================
-    # SEATBELT EVENT
-    # ========================================================
-
-    if seatbelt_detected:
-
-        # Play seatbelt warning
-        play_seatbelt_alert()
-
-
-        # Log only once per seatbelt violation episode
-        if not seatbelt_logged:
-
-            log_event(
-                "NO_SEATBELT",
-                seatbelt_duration
-            )
-
-
-            # Reduce safety score
-            safety_score.add_seatbelt_violation()
-
-            seatbelt_logged = True
-
-
-    # ========================================================
     # DETERMINE MAIN STATUS
     # ========================================================
 
@@ -1084,12 +994,6 @@ while True:
     elif phone_detected:
 
         status = "PHONE DETECTED"
-
-        status_color = (0, 0, 255)
-
-    elif seatbelt_detected:
-
-        status = "NO SEATBELT"
 
         status_color = (0, 0, 255)
 
@@ -1482,9 +1386,7 @@ while True:
 
         f"Distraction: {safety_score.distraction_count}   "
 
-        f"Phone: {safety_score.phone_count}   "
-
-        f"Seatbelt: {safety_score.seatbelt_count}"
+        f"Phone: {safety_score.phone_count}"
     )
 
 
@@ -1593,11 +1495,6 @@ print(
 print(
     f"Phone Events      : "
     f"{safety_score.phone_count}"
-)
-
-print(
-    f"Seatbelt Events   : "
-    f"{safety_score.seatbelt_count}"
 )
 
 print()
