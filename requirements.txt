@@ -4,3 +4,6 @@ numpy
 pygame
 pandas
 matplotlib
+ultralytics
+Pillow
+psutil

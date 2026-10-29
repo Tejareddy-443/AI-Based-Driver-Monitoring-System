@@ -1,6 +1,7 @@
 import csv
+import math
 import os
-from datetime import datetime
+from datetime import datetime, timezone as datetime_timezone
 
 
 # ============================================================
@@ -43,7 +44,11 @@ def log_event(event_name, duration):
 
     initialize_log()
 
-    now = datetime.now()
+    duration = round(float(duration), 2)
+    if not math.isfinite(duration) or duration < 0:
+        raise ValueError("Event duration must be a finite, non-negative number.")
+
+    now = datetime.now(datetime_timezone.utc).replace(microsecond=0)
 
     date = now.strftime("%Y-%m-%d")
     time = now.strftime("%H:%M:%S")

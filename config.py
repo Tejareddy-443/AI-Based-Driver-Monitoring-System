@@ -20,13 +20,3 @@ DISTRACTION_DURATION = 2.0
 # Mobile Phone Detection
 PHONE_CONFIDENCE_THRESHOLD = 0.70
 PHONE_DURATION = 1.0
-
-
-
-
-
-
-
-
-
-
